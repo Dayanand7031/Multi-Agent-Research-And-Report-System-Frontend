@@ -1,3 +1,9 @@
+import {
+    FaCheckCircle,
+    FaTimesCircle,
+    FaSpinner
+} from "react-icons/fa";
+
 export default function ApprovalActions({
     loading,
     approved,
@@ -10,58 +16,118 @@ export default function ApprovalActions({
         <div className="flex gap-4">
 
             {/* Approve */}
+
             <button
+
                 onClick={onApprove}
+
                 disabled={loading || approved}
+
                 className={`
                     flex-1
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
                     rounded-lg
                     py-3
                     font-semibold
                     text-white
-                    transition
+                    transition-all
+                    duration-200
 
                     ${
                         approved
-                            ? "bg-green-400 cursor-not-allowed"
+                            ? "bg-green-500 cursor-not-allowed"
                             : "bg-green-600 hover:bg-green-700"
                     }
 
                     ${
                         loading
-                            ? "opacity-60 cursor-not-allowed"
+                            ? "opacity-70 cursor-not-allowed"
                             : ""
                     }
                 `}
+
             >
 
                 {
-                    approved
-                        ? "✔ Approved"
-                        : "✅ Approve"
+
+                    loading ? (
+
+                        <>
+
+                            <FaSpinner className="animate-spin" />
+
+                            <span>
+                                Approving...
+                            </span>
+
+                        </>
+
+                    ) : approved ? (
+
+                        <>
+
+                            <FaCheckCircle />
+
+                            <span>
+                                Approved
+                            </span>
+
+                        </>
+
+                    ) : (
+
+                        <>
+
+                            <FaCheckCircle />
+
+                            <span>
+                                Approve Report
+                            </span>
+
+                        </>
+
+                    )
+
                 }
 
             </button>
 
             {/* Reject */}
+
             <button
+
                 onClick={onReject}
-                disabled={loading}
+
+                disabled={loading || approved}
+
                 className="
                     flex-1
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
                     rounded-lg
                     py-3
                     font-semibold
                     text-white
                     bg-red-600
                     hover:bg-red-700
-                    transition
+                    transition-all
+                    duration-200
                     disabled:opacity-60
                     disabled:cursor-not-allowed
                 "
+
             >
 
-                ❌ Reject
+                <FaTimesCircle />
+
+                <span>
+                    Request Changes
+                </span>
 
             </button>
 

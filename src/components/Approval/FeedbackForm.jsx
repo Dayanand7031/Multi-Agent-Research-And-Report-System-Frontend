@@ -1,5 +1,12 @@
 import { useState } from "react";
 
+import {
+    FaCommentDots,
+    FaArrowRotateRight,
+    FaSpinner,
+    FaTimes
+} from "react-icons/fa";
+
 export default function FeedbackForm({
     loading,
     onRegenerate,
@@ -23,60 +30,131 @@ export default function FeedbackForm({
 
     return (
 
-        <div className="mt-6 border-t pt-6">
+        <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-6">
 
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                Improve the Report
-            </h3>
+            {/* Header */}
 
-            <p className="text-sm text-gray-500 mb-4">
-                Tell the AI what should be improved before regenerating the report.
-            </p>
+            <div className="flex items-center gap-3 mb-5">
+
+                <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+
+                    <FaCommentDots className="text-orange-600" />
+
+                </div>
+
+                <div>
+
+                    <h3 className="text-lg font-semibold text-gray-800">
+
+                        Request Changes
+
+                    </h3>
+
+                    <p className="text-sm text-gray-500">
+
+                        Describe what should be improved before generating a new report.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            {/* Textarea */}
 
             <textarea
-                rows={5}
+
+                rows={6}
+
                 value={feedback}
+
                 onChange={(e) =>
                     setFeedback(e.target.value)
                 }
-                placeholder="Example: Add more statistics, improve market analysis, include recent trends..."
+
+                placeholder="Example:
+• Include more recent market statistics
+• Improve competitor analysis
+• Add references from academic sources
+• Expand the conclusion"
+
                 className="
                     w-full
                     rounded-lg
                     border
                     border-gray-300
-                    p-3
+                    bg-white
+                    p-4
                     resize-none
                     focus:outline-none
                     focus:ring-2
                     focus:ring-orange-500
+                    transition
                 "
+
             />
 
-            <div className="flex justify-end gap-3 mt-4">
+            <div className="flex justify-between items-center mt-2">
+
+                <span className="text-xs text-gray-500">
+
+                    {feedback.length} characters
+
+                </span>
+
+                <span className="text-xs text-gray-400">
+
+                    Provide clear instructions for better results.
+
+                </span>
+
+            </div>
+
+            {/* Actions */}
+
+            <div className="flex justify-end gap-3 mt-6">
 
                 <button
+
                     onClick={onCancel}
+
                     disabled={loading}
+
                     className="
+                        flex
+                        items-center
+                        gap-2
                         px-5
-                        py-2
+                        py-2.5
                         rounded-lg
                         border
                         border-gray-300
+                        bg-white
                         hover:bg-gray-100
                         transition
+                        disabled:opacity-60
                     "
+
                 >
+
+                    <FaTimes />
+
                     Cancel
+
                 </button>
 
                 <button
+
                     onClick={handleSubmit}
+
                     disabled={loading}
+
                     className="
+                        flex
+                        items-center
+                        gap-2
                         px-5
-                        py-2
+                        py-2.5
                         rounded-lg
                         bg-orange-600
                         hover:bg-orange-700
@@ -86,12 +164,35 @@ export default function FeedbackForm({
                         disabled:opacity-60
                         disabled:cursor-not-allowed
                     "
+
                 >
+
                     {
-                        loading
-                            ? "Generating..."
-                            : "🔄 Regenerate Report"
+
+                        loading ? (
+
+                            <>
+
+                                <FaSpinner className="animate-spin" />
+
+                                Regenerating...
+
+                            </>
+
+                        ) : (
+
+                            <>
+
+                                <FaArrowRotateRight />
+
+                                Regenerate Report
+
+                            </>
+
+                        )
+
                     }
+
                 </button>
 
             </div>

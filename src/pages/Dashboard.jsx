@@ -1,3 +1,7 @@
+
+
+import { FaRobot } from "react-icons/fa";
+
 import { useState } from "react";
 
 import Sidebar from "../components/Sidebar";
@@ -22,27 +26,41 @@ export default function Dashboard() {
 
     const [approved, setApproved] = useState(false);
 
-    const [loading, setLoading] = useState(false);
+    // null | "generate" | "regenerate" | "approve"
+    const [loadingType, setLoadingType] = useState(null);
 
     return (
 
         <div className="min-h-screen bg-gray-100">
 
-            {/* Loading Overlay */}
-            {loading && <LoadingSpinner />}
+            {/* Show workflow loader only while generating/regenerating */}
+            {(loadingType === "generate" ||
+                loadingType === "regenerate") && (
+                <LoadingSpinner />
+            )}
 
             {/* Header */}
             <header className="bg-white shadow-sm border-b">
 
-                <div className="max-w-screen-2xl mx-auto px-8 py-5">
+                                <div className="flex items-center gap-3">
 
-                    <h1 className="text-3xl font-bold text-gray-800">
-                        🤖 Multi-Agent Research & Report System
-                    </h1>
+                    <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
 
-                    <p className="text-gray-500 mt-1">
-                        AI-powered autonomous research using multiple specialized agents.
-                    </p>
+                        <FaRobot className="text-blue-600 text-xl" />
+
+                    </div>
+
+                    <div>
+
+                        <h1 className="text-3xl font-bold text-gray-800">
+                            Multi-Agent Research System
+                        </h1>
+
+                        <p className="text-gray-500">
+                            AI-powered autonomous research using specialized agents.
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -60,8 +78,8 @@ export default function Dashboard() {
                         setSelectedReportId={setSelectedReportId}
                         setTopic={setTopic}
                         setApproved={setApproved}
-                        loading={loading}
-                        setLoading={setLoading}
+                        loading={loadingType === "generate"}
+                        setLoadingType={setLoadingType}
                     />
 
                 </aside>
@@ -69,26 +87,26 @@ export default function Dashboard() {
                 {/* Main Content */}
                 <main className="flex-1 flex flex-col gap-6">
 
-                    {/* Report */}
                     <ReportViewer
                         report={report}
                     />
 
-                    {/* Metadata */}
                     <MetadataCard
                         metadata={metadata}
                     />
 
-                    {/* Human Approval */}
                     {selectedReportId && (
 
                         <ApprovalPanel
                             reportId={selectedReportId}
                             topic={topic}
+
                             approved={approved}
                             setApproved={setApproved}
-                            loading={loading}
-                            setLoading={setLoading}
+
+                            loadingType={loadingType}
+                            setLoadingType={setLoadingType}
+
                             setReport={setReport}
                             setMetadata={setMetadata}
                             setSelectedReportId={setSelectedReportId}

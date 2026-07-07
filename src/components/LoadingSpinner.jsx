@@ -1,11 +1,40 @@
 import { useEffect, useState } from "react";
 
+import {
+    FaProjectDiagram,
+    FaSearch,
+    FaChartBar,
+    FaPenFancy,
+    FaShieldAlt,
+    FaCheckCircle
+} from "react-icons/fa";
+
 const steps = [
-    "🧠 Orchestrator Agent is planning research...",
-    "🔍 Research Agent is searching the web...",
-    "📊 Analyst Agent is extracting insights...",
-    "✍️ Writer Agent is generating the report...",
-    "✅ Fact Checker Agent is verifying claims..."
+    {
+        title: "Orchestrator Agent",
+        description: "Planning research workflow...",
+        icon: FaProjectDiagram,
+    },
+    {
+        title: "Research Agent",
+        description: "Searching and collecting information...",
+        icon: FaSearch,
+    },
+    {
+        title: "Analyst Agent",
+        description: "Extracting insights from sources...",
+        icon: FaChartBar,
+    },
+    {
+        title: "Writer Agent",
+        description: "Generating structured report...",
+        icon: FaPenFancy,
+    },
+    {
+        title: "Fact Checker",
+        description: "Validating generated content...",
+        icon: FaShieldAlt,
+    },
 ];
 
 export default function LoadingSpinner() {
@@ -34,9 +63,11 @@ export default function LoadingSpinner() {
 
     return (
 
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
 
-            <div className="bg-white rounded-2xl shadow-xl w-[500px] p-8">
+            <div className="bg-white rounded-2xl shadow-2xl w-[620px] max-w-[90%] p-8">
+
+                {/* Spinner */}
 
                 <div className="flex justify-center">
 
@@ -50,68 +81,161 @@ export default function LoadingSpinner() {
                             rounded-full
                             animate-spin
                         "
-                    ></div>
+                    />
 
                 </div>
 
-                <h2 className="text-2xl font-bold text-center mt-6">
+                {/* Heading */}
 
-                    Generating Research Report...
+                <div className="text-center mt-6">
 
-                </h2>
+                    <h2 className="text-2xl font-bold text-gray-800">
 
-                <p className="text-center text-gray-500 mt-2">
+                        Generating Research Report
 
-                    Please wait while our AI agents collaborate.
+                    </h2>
 
-                </p>
+                    <p className="text-gray-500 mt-2">
 
-                <div className="mt-8 space-y-3">
+                        Multiple AI agents are collaborating to produce a
+                        comprehensive research report.
 
-                    {steps.map((step, index) => (
+                    </p>
+
+                </div>
+
+                {/* Progress */}
+
+                <div className="mt-8 space-y-4">
+
+                    {
+
+                        steps.map((step, index) => {
+
+                            const Icon = step.icon;
+
+                            return (
+
+                                <div
+
+                                    key={index}
+
+                                    className={`
+                                        flex
+                                        items-center
+                                        gap-4
+                                        rounded-xl
+                                        border
+                                        p-4
+                                        transition-all
+                                        duration-300
+                                        ${
+                                            index < currentStep
+                                                ? "border-green-200 bg-green-50"
+                                                : index === currentStep
+                                                ? "border-blue-300 bg-blue-50 shadow"
+                                                : "border-gray-200 bg-gray-50"
+                                        }
+                                    `}
+
+                                >
+
+                                    {/* Status */}
+
+                                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white shadow">
+
+                                        {
+
+                                            index < currentStep ? (
+
+                                                <FaCheckCircle className="text-green-600" />
+
+                                            ) : (
+
+                                                <Icon
+                                                    className={
+                                                        index === currentStep
+                                                            ? "text-blue-600"
+                                                            : "text-gray-400"
+                                                    }
+                                                />
+
+                                            )
+
+                                        }
+
+                                    </div>
+
+                                    {/* Text */}
+
+                                    <div className="flex-1">
+
+                                        <h3 className="font-semibold text-gray-800">
+
+                                            {step.title}
+
+                                        </h3>
+
+                                        <p className="text-sm text-gray-500">
+
+                                            {step.description}
+
+                                        </p>
+
+                                    </div>
+
+                                    {/* Spinner */}
+
+                                    {
+
+                                        index === currentStep && (
+
+                                            <div
+                                                className="
+                                                    w-5
+                                                    h-5
+                                                    border-2
+                                                    border-blue-500
+                                                    border-t-transparent
+                                                    rounded-full
+                                                    animate-spin
+                                                "
+                                            />
+
+                                        )
+
+                                    }
+
+                                </div>
+
+                            );
+
+                        })
+
+                    }
+
+                </div>
+
+                {/* Footer */}
+
+                <div className="mt-8">
+
+                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
 
                         <div
-                            key={index}
-                            className={`
-                                flex
-                                items-center
-                                gap-3
-                                rounded-lg
-                                p-3
-                                transition
-                                ${
-                                    index <= currentStep
-                                        ? "bg-blue-50 text-blue-700"
-                                        : "bg-gray-100 text-gray-400"
-                                }
-                            `}
-                        >
+                            className="h-full bg-blue-600 transition-all duration-500"
+                            style={{
+                                width: `${((currentStep + 1) / steps.length) * 100}%`,
+                            }}
+                        />
 
-                            {index < currentStep ? (
-                                <span>✅</span>
-                            ) : index === currentStep ? (
-                                <div
-                                    className="
-                                        w-4
-                                        h-4
-                                        border-2
-                                        border-blue-500
-                                        border-t-transparent
-                                        rounded-full
-                                        animate-spin
-                                    "
-                                />
-                            ) : (
-                                <span>⏳</span>
-                            )}
+                    </div>
 
-                            <span className="font-medium">
-                                {step}
-                            </span>
+                    <p className="text-center text-sm text-gray-500 mt-3">
 
-                        </div>
+                        Step {currentStep + 1} of {steps.length}
 
-                    ))}
+                    </p>
 
                 </div>
 

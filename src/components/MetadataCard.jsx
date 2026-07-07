@@ -1,103 +1,222 @@
+import {
+    FaChartBar,
+    FaBullseye,
+    FaLayerGroup,
+    FaStar,
+    FaClock,
+    FaCheckCircle,
+    FaExclamationTriangle,
+    FaTimesCircle,
+    FaDatabase
+} from "react-icons/fa";
+
 export default function MetadataCard({ metadata }) {
 
     if (!metadata) {
+
         return (
+
             <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">
-                    📊 Report Metadata
-                </h2>
 
-                <p className="text-gray-500">
-                    No report selected.
-                </p>
-            </div>
-        );
-    }
+                <div className="flex items-center gap-3 mb-4">
 
-    const cards = [
-        {
-            title: "Confidence",
-            value: `${metadata.confidence ?? 0}%`,
-            icon: "🎯"
-        },
-        {
-            title: "Coverage",
-            value: `${metadata.coverage ?? 0}%`,
-            icon: "📊"
-        },
-        {
-            title: "Quality",
-            value: metadata.quality ?? "-",
-            icon: "⭐"
-        },
-        {
-            title: "Execution Time",
-            value: `${metadata.execution_time ?? 0}s`,
-            icon: "⏱️"
-        },
-        {
-            title: "Verified",
-            value: metadata.verified ?? 0,
-            icon: "✔️"
-        },
-        {
-            title: "Unverified",
-            value: metadata.unverified ?? 0,
-            icon: "⚠️"
-        },
-        {
-            title: "Contradicted",
-            value: metadata.contradicted ?? 0,
-            icon: "❌"
-        },
-        {
-            title: "Sources",
-            value: metadata.sources ?? 0,
-            icon: "📚"
-        }
-    ];
+                    <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
 
-    return (
-        <div className="bg-white rounded-xl shadow-lg p-6">
+                        <FaChartBar className="text-blue-600" />
 
-            <h2 className="text-xl font-bold text-gray-800 mb-6">
-                📊 Report Metadata
-            </h2>
+                    </div>
 
-            <div className="grid grid-cols-2 gap-4">
+                    <div>
 
-                {cards.map((card) => (
+                        <h2 className="text-xl font-semibold text-gray-800">
+                            Report Metadata
+                        </h2>
 
-                    <div
-                        key={card.title}
-                        className="
-                            border
-                            rounded-xl
-                            p-4
-                            bg-gray-50
-                            hover:bg-blue-50
-                            transition
-                        "
-                    >
-
-                        <div className="text-2xl">
-                            {card.icon}
-                        </div>
-
-                        <p className="text-sm text-gray-500 mt-2">
-                            {card.title}
-                        </p>
-
-                        <p className="text-xl font-bold text-gray-800 mt-1">
-                            {card.value}
+                        <p className="text-sm text-gray-500">
+                            Metrics will appear after generating a report.
                         </p>
 
                     </div>
 
-                ))}
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+    const cards = [
+
+        {
+            title: "Confidence",
+            value: `${metadata.confidence ?? 0}%`,
+            icon: FaBullseye,
+            bg: "bg-blue-100",
+            color: "text-blue-600"
+        },
+
+        {
+            title: "Coverage",
+            value: `${metadata.coverage ?? 0}%`,
+            icon: FaLayerGroup,
+            bg: "bg-indigo-100",
+            color: "text-indigo-600"
+        },
+
+        {
+            title: "Quality",
+            value: metadata.quality ?? "-",
+            icon: FaStar,
+            bg: "bg-yellow-100",
+            color: "text-yellow-600"
+        },
+
+        {
+            title: "Execution Time",
+            value: `${metadata.execution_time ?? 0}s`,
+            icon: FaClock,
+            bg: "bg-purple-100",
+            color: "text-purple-600"
+        },
+
+        {
+            title: "Verified",
+            value: metadata.verified ?? 0,
+            icon: FaCheckCircle,
+            bg: "bg-green-100",
+            color: "text-green-600"
+        },
+
+        {
+            title: "Unverified",
+            value: metadata.unverified ?? 0,
+            icon: FaExclamationTriangle,
+            bg: "bg-orange-100",
+            color: "text-orange-600"
+        },
+
+        {
+            title: "Contradicted",
+            value: metadata.contradicted ?? 0,
+            icon: FaTimesCircle,
+            bg: "bg-red-100",
+            color: "text-red-600"
+        },
+
+        {
+            title: "Sources",
+            value: metadata.sources ?? 0,
+            icon: FaDatabase,
+            bg: "bg-cyan-100",
+            color: "text-cyan-600"
+        }
+
+    ];
+
+    return (
+
+        <div className="bg-white rounded-xl shadow-lg p-6">
+
+            {/* Header */}
+
+            <div className="flex items-center gap-3 mb-6">
+
+                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+
+                    <FaChartBar className="text-blue-600" />
+
+                </div>
+
+                <div>
+
+                    <h2 className="text-xl font-semibold text-gray-800">
+
+                        Report Metadata
+
+                    </h2>
+
+                    <p className="text-sm text-gray-500">
+
+                        Quality metrics generated by the AI workflow.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            {/* Cards */}
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+
+                {
+
+                    cards.map((card) => {
+
+                        const Icon = card.icon;
+
+                        return (
+
+                            <div
+
+                                key={card.title}
+
+                                className="
+                                    rounded-xl
+                                    border
+                                    border-gray-200
+                                    p-5
+                                    transition-all
+                                    duration-300
+                                    hover:border-blue-400
+                                    hover:shadow-md
+                                "
+
+                            >
+
+                                <div
+                                    className={`
+                                        w-12
+                                        h-12
+                                        rounded-xl
+                                        flex
+                                        items-center
+                                        justify-center
+                                        ${card.bg}
+                                    `}
+                                >
+
+                                    <Icon
+                                        className={`text-xl ${card.color}`}
+                                    />
+
+                                </div>
+
+                                <p className="text-sm text-gray-500 mt-4">
+
+                                    {card.title}
+
+                                </p>
+
+                                <h3 className="text-2xl font-bold text-gray-800 mt-1">
+
+                                    {card.value}
+
+                                </h3>
+
+                            </div>
+
+                        );
+
+                    })
+
+                }
 
             </div>
 
         </div>
+
     );
+
 }

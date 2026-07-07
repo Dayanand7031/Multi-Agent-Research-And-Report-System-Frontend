@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+import {
+    FaClipboardCheck,
+    FaInfoCircle
+} from "react-icons/fa";
+
 import ApprovalActions from "./ApprovalActions";
 import FeedbackForm from "./FeedbackForm";
 import DownloadButton from "./DownloadButton";
@@ -24,9 +29,9 @@ export default function ApprovalPanel({
 
     const [showFeedback, setShowFeedback] = useState(false);
 
-    // ---------------------------------------
+    // ----------------------------------------
     // Approve Report
-    // ---------------------------------------
+    // ----------------------------------------
     const handleApprove = async () => {
 
         try {
@@ -37,15 +42,17 @@ export default function ApprovalPanel({
 
             setApproved(true);
 
-            alert("✅ Report Approved Successfully!");
+        }
 
-        } catch (err) {
+        catch (err) {
 
             console.error(err);
 
-            alert("Failed to approve report.");
+            alert("Unable to approve report.");
 
-        } finally {
+        }
+
+        finally {
 
             setLoading(false);
 
@@ -53,9 +60,9 @@ export default function ApprovalPanel({
 
     };
 
-    // ---------------------------------------
+    // ----------------------------------------
     // Regenerate Report
-    // ---------------------------------------
+    // ----------------------------------------
     const handleRegenerate = async (feedback) => {
 
         try {
@@ -79,24 +86,21 @@ export default function ApprovalPanel({
                 response.data.metadata.report_id
             );
 
-            // New report is always draft
             setApproved(false);
 
             setShowFeedback(false);
 
-            alert(
-                "✅ Report regenerated successfully!"
-            );
+        }
 
-        } catch (err) {
+        catch (err) {
 
             console.error(err);
 
-            alert(
-                "Unable to regenerate report."
-            );
+            alert("Unable to regenerate report.");
 
-        } finally {
+        }
+
+        finally {
 
             setLoading(false);
 
@@ -108,41 +112,97 @@ export default function ApprovalPanel({
 
         <div className="bg-white rounded-xl shadow-lg p-6">
 
-            <h2 className="text-xl font-bold text-gray-800">
-                Human Review
-            </h2>
+            {/* Header */}
 
-            <p className="text-gray-500 mt-2 mb-6">
-                Review the generated report before approving it.
-            </p>
+            <div className="flex items-center gap-3">
+
+                <div className="w-11 h-11 rounded-lg bg-green-100 flex items-center justify-center">
+
+                    <FaClipboardCheck className="text-green-600 text-lg" />
+
+                </div>
+
+                <div>
+
+                    <h2 className="text-xl font-semibold text-gray-800">
+
+                        Human Review
+
+                    </h2>
+
+                    <p className="text-sm text-gray-500">
+
+                        Review the generated report before final approval.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            {/* Info Box */}
+
+            <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 flex gap-3">
+
+                <FaInfoCircle className="text-blue-600 mt-1 shrink-0" />
+
+                <div>
+
+                    <p className="font-medium text-blue-800">
+
+                        Review Required
+
+                    </p>
+
+                    <p className="text-sm text-blue-700 mt-1">
+
+                        Verify the report quality before approving it.
+                        If improvements are needed, request changes and
+                        regenerate the report with feedback.
+
+                    </p>
+
+                </div>
+
+            </div>
 
             {/* Approval Buttons */}
 
-            <ApprovalActions
-                loading={loading}
-                approved={approved}
-                onApprove={handleApprove}
-                onReject={() =>
-                    setShowFeedback(true)
-                }
-            />
+            <div className="mt-6">
+
+                <ApprovalActions
+                    loading={loading}
+                    approved={approved}
+                    onApprove={handleApprove}
+                    onReject={() =>
+                        setShowFeedback(true)
+                    }
+                />
+
+            </div>
 
             {/* Feedback */}
 
             {
+
                 showFeedback && (
 
-                    <FeedbackForm
-                        loading={loading}
-                        onCancel={() =>
-                            setShowFeedback(false)
-                        }
-                        onRegenerate={
-                            handleRegenerate
-                        }
-                    />
+                    <div className="mt-6">
+
+                        <FeedbackForm
+                            loading={loading}
+                            onCancel={() =>
+                                setShowFeedback(false)
+                            }
+                            onRegenerate={
+                                handleRegenerate
+                            }
+                        />
+
+                    </div>
 
                 )
+
             }
 
             {/* Download */}

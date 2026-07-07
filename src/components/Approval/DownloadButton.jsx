@@ -1,3 +1,11 @@
+import { useState } from "react";
+
+import {
+    FaDownload,
+    FaSpinner,
+    FaLock
+} from "react-icons/fa";
+
 import { downloadPDF } from "../../api/reportApi";
 
 export default function DownloadButton({
@@ -6,14 +14,15 @@ export default function DownloadButton({
     approved
 }) {
 
+    const [downloading, setDownloading] = useState(false);
+
     const handleDownload = async () => {
 
-        if (!approved) {
-            alert("Please approve the report before downloading.");
-            return;
-        }
+        if (!approved) return;
 
         try {
+
+            setDownloading(true);
 
             const response = await downloadPDF(
                 reportId
@@ -26,9 +35,8 @@ export default function DownloadButton({
                 }
             );
 
-            const url = window.URL.createObjectURL(
-                blob
-            );
+            const url =
+                window.URL.createObjectURL(blob);
 
             const link =
                 document.createElement("a");
@@ -37,19 +45,13 @@ export default function DownloadButton({
 
             link.download = `${topic}.pdf`;
 
-            document.body.appendChild(
-                link
-            );
+            document.body.appendChild(link);
 
             link.click();
 
-            document.body.removeChild(
-                link
-            );
+            document.body.removeChild(link);
 
-            window.URL.revokeObjectURL(
-                url
-            );
+            window.URL.revokeObjectURL(url);
 
         }
 
@@ -63,33 +65,95 @@ export default function DownloadButton({
 
         }
 
+        finally {
+
+            setDownloading(false);
+
+        }
+
     };
 
     return (
 
         <button
+
             onClick={handleDownload}
-            disabled={!approved}
+
+            disabled={!approved || downloading}
+
             className={`
                 w-full
+                flex
+                items-center
+                justify-center
+                gap-3
                 rounded-lg
                 py-3
                 font-semibold
-                text-white
-                transition
+                transition-all
+                duration-200
 
                 ${
                     approved
-                        ? "bg-blue-600 hover:bg-blue-700"
-                        : "bg-gray-400 cursor-not-allowed"
+                        ? "bg-blue-600 hover:bg-blue-700 text-white"
+                        : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                }
+
+                ${
+                    downloading
+                        ? "opacity-80 cursor-wait"
+                        : ""
                 }
             `}
+
         >
 
             {
-                approved
-                    ? "📥 Download PDF"
-                    : "📄 Download (Approve First)"
+
+                downloading ? (
+
+                    <>
+
+                        <FaSpinner className="animate-spin" />
+
+                        <span>
+
+                            Downloading PDF...
+
+                        </span>
+
+                    </>
+
+                ) : approved ? (
+
+                    <>
+
+                        <FaDownload />
+
+                        <span>
+
+                            Download PDF
+
+                        </span>
+
+                    </>
+
+                ) : (
+
+                    <>
+
+                        <FaLock />
+
+                        <span>
+
+                            Approve Report to Download
+
+                        </span>
+
+                    </>
+
+                )
+
             }
 
         </button>

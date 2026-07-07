@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
 import {
+    FaHistory,
+    FaTrashAlt,
+    FaCheckCircle,
+    FaClock
+} from "react-icons/fa";
+
+import {
     getReports,
     getReport,
     deleteReport
@@ -31,19 +38,18 @@ export default function ReportHistory({
 
             setReports(response.data);
 
-        } catch (err) {
+        }
 
-            console.error(
-                "Failed to load reports:",
-                err
-            );
+        catch (err) {
+
+            console.error(err);
 
         }
 
     };
 
     // ---------------------------------
-    // Load Selected Report
+    // Load Report
     // ---------------------------------
     const handleSelectReport = async (report) => {
 
@@ -69,17 +75,15 @@ export default function ReportHistory({
                 response.data.topic
             );
 
-            // NEW
             setApproved(
                 response.data.approved
             );
 
-        } catch (err) {
+        }
 
-            console.error(
-                "Failed to load report:",
-                err
-            );
+        catch (err) {
+
+            console.error(err);
 
         }
 
@@ -90,11 +94,13 @@ export default function ReportHistory({
     // ---------------------------------
     const handleDelete = async (reportId) => {
 
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this report?"
-        );
-
-        if (!confirmDelete) return;
+        if (
+            !window.confirm(
+                "Delete this report permanently?"
+            )
+        ) {
+            return;
+        }
 
         try {
 
@@ -112,15 +118,13 @@ export default function ReportHistory({
 
             setTopic("");
 
-            // NEW
             setApproved(false);
 
-        } catch (err) {
+        }
 
-            console.error(
-                "Failed to delete report:",
-                err
-            );
+        catch (err) {
+
+            console.error(err);
 
             alert(
                 "Unable to delete report."
@@ -132,86 +136,168 @@ export default function ReportHistory({
 
     return (
 
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-y-auto">
 
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                📚 Report History
-            </h3>
+            {/* Header */}
+
+            <div className="flex items-center gap-2 mb-5">
+
+                <FaHistory className="text-blue-600" />
+
+                <h3 className="text-lg font-semibold text-gray-800">
+                    Report History
+                </h3>
+
+            </div>
 
             {
+
                 reports.length === 0 ? (
 
-                    <p className="text-sm text-gray-500">
-                        No reports found.
-                    </p>
+                    <div className="text-center py-8">
+
+                        <p className="text-sm text-gray-500">
+                            No reports available.
+                        </p>
+
+                    </div>
 
                 ) : (
 
                     <div className="space-y-3">
 
                         {
+
                             reports.map((report) => (
 
                                 <div
+
                                     key={report.report_id}
+
                                     className="
+                                        rounded-xl
                                         border
-                                        rounded-lg
-                                        p-3
-                                        hover:bg-blue-50
+                                        border-gray-200
+                                        bg-white
+                                        p-4
                                         transition
+                                        hover:border-blue-400
+                                        hover:shadow-md
                                     "
+
                                 >
 
-                                    <div className="flex justify-between items-start gap-3">
+                                    <div className="flex justify-between gap-3">
+
+                                        {/* Report */}
 
                                         <div
+
                                             onClick={() =>
                                                 handleSelectReport(
                                                     report
                                                 )
                                             }
+
                                             className="
                                                 flex-1
                                                 cursor-pointer
                                             "
+
                                         >
 
-                                            <p className="font-semibold text-gray-800">
+                                            <h4 className="font-semibold text-gray-800 line-clamp-2">
+
                                                 {report.topic}
-                                            </p>
 
-                                            <p className="text-xs text-gray-500 mt-1">
+                                            </h4>
 
-                                                {report.quality}
-
-                                                {" • "}
+                                            <p className="text-xs text-gray-500 mt-2">
 
                                                 {
+
                                                     new Date(
                                                         report.created_at
                                                     ).toLocaleString()
+
                                                 }
 
                                             </p>
 
+                                            <div className="flex items-center gap-2 mt-3">
+
+                                                <span
+                                                    className="
+                                                        text-xs
+                                                        px-2
+                                                        py-1
+                                                        rounded-full
+                                                        bg-blue-100
+                                                        text-blue-700
+                                                    "
+                                                >
+                                                    {report.quality}
+                                                </span>
+
+                                                {
+
+                                                    report.approved ? (
+
+                                                        <span className="flex items-center gap-1 text-xs text-green-600">
+
+                                                            <FaCheckCircle />
+
+                                                            Approved
+
+                                                        </span>
+
+                                                    ) : (
+
+                                                        <span className="flex items-center gap-1 text-xs text-orange-500">
+
+                                                            <FaClock />
+
+                                                            Draft
+
+                                                        </span>
+
+                                                    )
+
+                                                }
+
+                                            </div>
+
                                         </div>
 
+                                        {/* Delete */}
+
                                         <button
+
                                             onClick={() =>
                                                 handleDelete(
                                                     report.report_id
                                                 )
                                             }
+
                                             className="
+                                                h-9
+                                                w-9
+                                                rounded-lg
+                                                flex
+                                                items-center
+                                                justify-center
                                                 text-red-500
+                                                hover:bg-red-50
                                                 hover:text-red-700
-                                                text-lg
-                                                font-bold
+                                                transition
                                             "
+
                                             title="Delete Report"
+
                                         >
-                                            🗑️
+
+                                            <FaTrashAlt />
+
                                         </button>
 
                                     </div>
@@ -219,11 +305,13 @@ export default function ReportHistory({
                                 </div>
 
                             ))
+
                         }
 
                     </div>
 
                 )
+
             }
 
         </div>

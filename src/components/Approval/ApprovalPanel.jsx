@@ -19,8 +19,8 @@ export default function ApprovalPanel({
     approved,
     setApproved,
 
-    loading,
-    setLoading,
+    loadingType,
+    setLoadingType,
 
     setReport,
     setMetadata,
@@ -36,7 +36,7 @@ export default function ApprovalPanel({
 
         try {
 
-            setLoading(true);
+            setLoadingType("approve");
 
             await approveReport(reportId);
 
@@ -54,7 +54,7 @@ export default function ApprovalPanel({
 
         finally {
 
-            setLoading(false);
+           setLoadingType(null);
 
         }
 
@@ -67,7 +67,7 @@ export default function ApprovalPanel({
 
         try {
 
-            setLoading(true);
+            setLoadingType("regenerate");
 
             const response = await generateReport(
                 topic,
@@ -102,7 +102,7 @@ export default function ApprovalPanel({
 
         finally {
 
-            setLoading(false);
+            setLoadingType(null);
 
         }
 
@@ -170,13 +170,19 @@ export default function ApprovalPanel({
 
             <div className="mt-6">
 
-                <ApprovalActions
+                {/* <ApprovalActions
                     loading={loading}
                     approved={approved}
                     onApprove={handleApprove}
                     onReject={() =>
                         setShowFeedback(true)
                     }
+                /> */}
+                <ApprovalActions
+                    loading={loadingType === "approve"}
+                    approved={approved}
+                    onApprove={handleApprove}
+                    onReject={() => setShowFeedback(true)}
                 />
 
             </div>

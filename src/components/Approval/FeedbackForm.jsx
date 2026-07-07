@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import {
     FaCommentDots,
-    FaArrowRotateRight,
+    FaSyncAlt,
     FaSpinner,
     FaTimes
 } from "react-icons/fa";
@@ -183,7 +183,7 @@ export default function FeedbackForm({
 
                             <>
 
-                                <FaArrowRotateRight />
+                               <FaSyncAlt />
 
                                 Regenerate Report
 
